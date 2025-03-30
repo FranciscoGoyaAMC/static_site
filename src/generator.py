@@ -23,7 +23,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
     # Substitui os espaços reservados no template
     full_html = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
 
-    # Substitui os links e fontes para usar o caminho base
+    # Substituir href e src com o basepath
     full_html = full_html.replace('href="/', f'href="{basepath}').replace('src="/', f'src="{basepath}')
 
     # Certifica que o diretório de destino existe
