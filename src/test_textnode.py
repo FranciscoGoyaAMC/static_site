@@ -1,5 +1,6 @@
 import unittest
-from textnode import TextNode, TextType, text_node_to_html_node, split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes, markdown_to_blocks
+from textnode import TextNode, TextType, text_node_to_html_node, split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes
+from markdown import markdown_to_blocks
 
 
 class TestTextNode(unittest.TestCase):
@@ -137,6 +138,7 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(nodes_both, expected)    
 
     def test_extract_markdown_images(self):
+        """Testa se a função extrai corretamente o texto alternativo e URL de uma imagem no formato markdown"""
         text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
         self.assertListEqual(
             extract_markdown_images(text),
@@ -144,6 +146,7 @@ class TestTextNode(unittest.TestCase):
         )
 
     def test_extract_markdown_links(self):
+        """Testa se a função extrai corretamente o texto do link e URL no formato markdown"""
         text = "Click [here](https://example.com) for more info."
         self.assertListEqual(
             extract_markdown_links(text),
@@ -151,15 +154,18 @@ class TestTextNode(unittest.TestCase):
         )
 
     def test_no_images(self):
+        """Testa se a função retorna uma lista vazia quando não há imagens no formato markdown no texto."""
         text = "No images here!"
         self.assertListEqual(extract_markdown_images(text), [])
 
 
     def test_no_links(self):
+        """Testa se a função retorna uma lista vazia quando o texto não contém links no formato markdown."""
         text = "No links here!"
         self.assertListEqual(extract_markdown_links(text), [])
 
     def test_split_images_single(self):
+        """Testa se a função divide corretamente um TextNode contendo texto normal e uma imagem em nodes separados"""
         node = TextNode(
             "Here is an ![image](https://example.com/image.jpg)",
             TextType.NORMAL,
@@ -172,6 +178,7 @@ class TestTextNode(unittest.TestCase):
         self.assertListEqual(new_nodes, expected)
 
     def test_split_images_multiple(self):
+        """Testa se a função divide corretamente um TextNode com múltiplas imagens em nodes individuais"""
         node = TextNode(
             "This is text with an ![image1](https://i.imgur.com/img1.png) and another ![image2](https://i.imgur.com/img2.png)",
             TextType.NORMAL,
@@ -186,11 +193,14 @@ class TestTextNode(unittest.TestCase):
         self.assertListEqual(new_nodes, expected)
 
     def test_split_images_no_images(self):
+        """Testa se a função retorna o TextNode original inalterado quando não há imagens no texto."""
         node = TextNode("This text has no images", TextType.NORMAL)
         new_nodes = split_nodes_image([node])
         self.assertListEqual(new_nodes, [node])
 
     def test_split_links_single(self):
+        """Testa se a função divide corretamente um TextNode contendo um link em nodes separados,
+          convertendo o link para um TextNode do tipo LINK e mantendo o texto normal adjacente"""
         node = TextNode(
             "Here is a [link](https://example.com)",
             TextType.NORMAL,
@@ -203,6 +213,8 @@ class TestTextNode(unittest.TestCase):
         self.assertListEqual(new_nodes, expected)
 
     def test_split_links_multiple(self):
+        """Testa se a função divide corretamente um TextNode com múltiplos links em nodes individuais,
+          convertendo cada link para TextNode.LINK e preservando o texto normal entre eles."""
         node = TextNode(
             "This is a [site1](https://site1.com) and another [site2](https://site2.com)",
             TextType.NORMAL,
@@ -217,11 +229,14 @@ class TestTextNode(unittest.TestCase):
         self.assertListEqual(new_nodes, expected)
 
     def test_split_links_no_links(self):
+        """Testa se a função retorna o próprio TextNode inalterado quando não há links no texto."""
         node = TextNode("This text has no links", TextType.NORMAL)
         new_nodes = split_nodes_link([node])
         self.assertListEqual(new_nodes, [node])
 
     def test_split_images_and_links_mixed(self):
+        """Testa se split_nodes_link e split_nodes_image processam corretamente um TextNode com links e imagens misturados,
+          convertendo cada elemento para seu tipo específico enquanto mantém o texto normal intacto."""
         node = TextNode(
             "Click [here](https://example.com) to see an ![image](https://example.com/image.jpg)",
             TextType.NORMAL,

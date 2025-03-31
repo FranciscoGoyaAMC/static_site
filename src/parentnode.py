@@ -10,6 +10,9 @@ class ParentNode(HTMLNode):
         super().__init__(tag=tag, value=None, children=children, props=props)
 
     def to_html(self):
+        """
+        Converte um nó (ParentNode) em HTML
+        """
         if self.children is None:
             raise ValueError("ParentNode requires at least one child.")
         if self.tag is None:

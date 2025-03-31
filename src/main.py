@@ -1,7 +1,6 @@
 import os
 import shutil
 import sys
-from copy_directory import copy_directory
 from generator import generate_pages_recursive
 
 DOCS_DIR = "docs/static_site"

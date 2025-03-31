@@ -4,6 +4,7 @@ from markdown import markdown_to_blocks, extract_title
 
 class TestMarkdownToBlocks(unittest.TestCase):
     def test_simple_paragraphs(self):
+        """Testa se a função markdown_to_blocks converte corretamente um texto markdown"""
         md = """
         This is the first paragraph.
 
@@ -16,6 +17,7 @@ class TestMarkdownToBlocks(unittest.TestCase):
         self.assertEqual(markdown_to_blocks(md), expected)
 
     def test_heading_and_paragraph(self):
+        """Testa se a função markdown_to_blocks separa corretamente um bloco markdown contendo um cabeçalho e um parágrafo"""
         md = """
         # Heading
 
@@ -28,6 +30,7 @@ class TestMarkdownToBlocks(unittest.TestCase):
         self.assertEqual(markdown_to_blocks(md), expected)
 
     def test_code_block(self):
+        """Testa se a função markdown_to_blocks identifica e mantém corretamente um bloco de código delimitado por crases (```)"""
         md = """
         ```
         Code block here
@@ -41,6 +44,7 @@ class TestMarkdownToBlocks(unittest.TestCase):
         self.assertEqual(markdown_to_blocks(md), expected)
 
     def test_list(self):
+        """Testa se a função markdown_to_blocks separa corretamente listas markdown em blocos distintos, agrupando os itens de cada lista juntos"""
         md = """
         - Item 1
         - Item 2
@@ -55,6 +59,7 @@ class TestMarkdownToBlocks(unittest.TestCase):
         self.assertEqual(markdown_to_blocks(md), expected)
 
     def test_mixed_content(self):
+        """Testa se a função markdown_to_blocks processa corretamente conteúdo misto separando cada tipo de bloco markdown adequadamente."""
         md = """
         # Title
 
